@@ -106,7 +106,7 @@ GET http://localhost:8080/products/1000
 ```
 PUT http://localhost:8080/products/2000
 {
- 	  "id": 2000,
+    "id": 2000,
     "name": "Flat screen TV",
     "current_price": {
         "currency_code": "EUR",
@@ -126,3 +126,9 @@ PUT http://localhost:8080/products/2000
     }
 }
 ```
+
+## TODO
+
+[] Write missing unit tests.
+[] Write comments in source code.
+[] Write integration tests for the repository layer.
