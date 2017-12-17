@@ -2,7 +2,7 @@
 
 This project implements POC for `myRetail RESTful service` case study. The implementation uses the following technologies:
 - `Spring Boot` for REST service
-- `Elasticsearch` as a NoSql Document store to store:
+- `Elasticsearch` as a NoSql Document store for:
   - Product info in the `product` index
   - Product price info in the `product-price` index
 
@@ -11,7 +11,7 @@ This project implements POC for `myRetail RESTful service` case study. The imple
 | -----------------| -------------- | -------------- | 
 | SNAPSHOT         | 1.5.9.RELEASE  |   5.6.5        | 
 
-## To build the project use the following command
+## To build the project use the following command:
 
 ```
 [PROJECT_HOME]/gradlew clean build
@@ -21,6 +21,13 @@ This project implements POC for `myRetail RESTful service` case study. The imple
 - Both unit and integration tests would be executed as part of build and report is available in the folder: `[PROJECT_HOME]/build/reports/tests`
 - Code coverage report is available in the folder: `[PROJECT_HOME]/build/reports/cobertura`
 
+## To run the tests use the following commands:
+
+- To run unit tests use: `[PROJECT_HOME]/gradlew clean test`
+
+- To run integration tests use: `[PROJECT_HOME]/gradlew clean iT`. Integration test use [EmbeddedElasticsearchServer](src/integrationtest/java/org/company/retail/EmbeddedElasticsearchServer.java) to validate repository functionality.
+
+- To run both unit and integration tests use: `[PROJECT_HOME]/gradlew clean allTests`
 
 ## Steps to run the service locally:
 1. [Download](https://www.elastic.co/downloads/past-releases/elasticsearch-5-6-5) and install Elasticsearch version 5.6.5.
