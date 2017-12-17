@@ -1,0 +1,96 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+     	classpath 'net.saliman:gradle-cobertura-plugin:2.4.0'
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'net.saliman.cobertura'
+
+
+group = 'org.company.retail'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+build.dependsOn 'allTests'
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    
+    
+    // https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path
+	compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
+	
+	// https://mvnrepository.com/artifact/commons-lang/commons-lang
+	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+	
+	// https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
+	testCompile group: 'org.elasticsearch', name: 'elasticsearch', version: '5.6.5'
+	
+	// https://mvnrepository.com/artifact/org.elasticsearch.plugin/transport-netty3-client
+	testCompile group: 'org.elasticsearch.plugin', name: 'transport-netty3-client', version: '5.6.5'
+	
+	
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	testCompile group: 'commons-io', name: 'commons-io', version: '2.6'
+	
+	/// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+	testCompile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
+	
+	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+	testCompile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.7'
+	
+	// https://mvnrepository.com/artifact/org.skyscreamer/jsonassert
+	testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'	
+	
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	
+	
+    
+}
+
+
+// sourceSets and configurations for `src/integrationtest/java`
+sourceSets {
+    integrationtest {
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    integrationtestCompile.extendsFrom testCompile
+    integrationtestRuntime.extendsFrom testRuntime
+}
+
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationtest.output.classesDir
+    classpath = sourceSets.integrationtest.runtimeClasspath
+}
+
+// combine test and integrationTest output into 1 locaiton 
+task allTests(type: TestReport, dependsOn: ['test', 'integrationTest']) {
+    destinationDir = file("$buildDir/reports/tests")
+    reportOn test, integrationTest
+}
+
+ check.dependsOn 'cobertura'
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+    coverageIgnoreTrivial = true
+    
+}
+
