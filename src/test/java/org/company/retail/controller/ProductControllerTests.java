@@ -226,4 +226,48 @@ public class ProductControllerTests {
 
 	}
 
+	@Test
+	public void products_not_supported_POST() throws Exception {
+
+		// Arrange
+		Long id = 123L;
+		String name = "test product";
+		String currency = "USD";
+		Double value = 23.34;
+		Product product = new Product(id, name, new ProductPrice(currency, value));
+
+		when(this.productService.getProduct(id)).thenReturn(product);
+
+		// Act Assert
+		this.mvc.perform(MockMvcRequestBuilders	.post("/products/" + id)
+												.contentType(MediaType.APPLICATION_JSON)
+												.content(objectMapper.writeValueAsString(product)))
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(status().isMethodNotAllowed());
+
+		verify(this.productService, times(0)).getProduct(id);
+		verifyNoMoreInteractions(this.productService);
+	}
+
+	@Test
+	public void products_not_supported_DELETE() throws Exception {
+
+		// Arrange
+		Long id = 123L;
+		String name = "test product";
+		String currency = "USD";
+		Double value = 23.34;
+		Product product = new Product(id, name, new ProductPrice(currency, value));
+
+		when(this.productService.getProduct(id)).thenReturn(product);
+
+		// Act Assert
+		this.mvc.perform(MockMvcRequestBuilders.delete("/products/" + id))
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(status().isMethodNotAllowed());
+
+		verify(this.productService, times(0)).getProduct(id);
+		verifyNoMoreInteractions(this.productService);
+	}
+
 }
