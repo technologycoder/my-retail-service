@@ -146,3 +146,12 @@ PUT http://localhost:8080/products/2000
 ```
 
 
+## Following are important features that need to be implemented to make this production ready:
+
+- [ ] [`Caching`](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html): Cache the Product info using `id` as key and invalidate it when updates to pricing are made.
+- [ ] [`Hystrix`](https://cloud.spring.io/spring-cloud-netflix/multi/multi__circuit_breaker_hystrix_clients.html): If Elasticsearch cluster (data store) is struggling to recover, the microservice should use `circuit breaker` to stop sending requests to it for some time so that the cluster can recover completely.
+- [ ] `Monitoring/Alering`: Service/request logs and metrics for the services/servers should be shiped to a central server for monitoring and alerting. `ELK` could be used to implement this.
+- [ ] `API Management`: This includes security, API keys, rate limiting, etc. Ideally some API management tool like Apigee could be used for this.
+- [ ] `Scalability`: To automate deployment/management of services to cluster of machines and to elastically scale the cluster based on load, we can use the following:
+  - Containerization using `Docker` & `Kubernetes`
+  - Service discovery/routing using `Spring Cloud`
