@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -28,12 +32,14 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
+	@ApiOperation(value = "GET Product details", response = Product.class)
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Product products(@PathVariable final Long id) throws ResourceNotFoundException, Exception {
 
 		return this.productService.getProduct(id);
 	}
 
+	@ApiOperation(value = "Update Product price", response = Product.class)
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Product updateProductPrice(@RequestBody final Product product)
 			throws ResourceNotFoundException, ProductValidationException, Exception {

@@ -145,9 +145,4 @@ PUT http://localhost:8080/products/2000
 }
 ```
 
-## TODO
 
-- [ ] Write missing unit tests.
-- [ ] Write comments in source code.
-- [ ] Write integration tests for the repository layer.
-- [ ] Add Swagger doc for API.

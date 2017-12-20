@@ -32,7 +32,7 @@ public class EsProductPriceRepository implements ProductPriceRepository {
 	private ObjectMapper objectMapper;
 
 	@Override
-	public ProductPrice getProductPrice(long id) throws Exception {
+	public ProductPrice getProductPrice(long id) throws ResourceNotFoundException, Exception {
 		try {
 
 			String resource = String.format("%s/%d/_source", repositoryResource, id);
@@ -55,15 +55,18 @@ public class EsProductPriceRepository implements ProductPriceRepository {
 		}
 	}
 
-	public void updateProductPrice(ProductPrice productPrice, Long id) throws Exception {
+	public void updateProductPrice(ProductPrice productPrice, Long id) throws ResourceNotFoundException, Exception {
 
 		try {
-
-			String resource = String.format("%s/%d", repositoryResource, id);
+			
+			//making sure the ProductPrice exists in ES, otherwise ResourceNotFoundException would be thrown
+			ProductPrice existingProductPrice = this.getProductPrice(id);
+			
+			String resource = String.format("%s/%d/?refresh=true", repositoryResource, id);
 
 			this.restClient.resourceCRUD(repositoryUrl, resource, HttpMethod.PUT, String.class, productPrice);
 
-			this.restClient.resourceCRUD(repositoryUrl, "product-price/_flush", HttpMethod.POST, String.class, null);
+			
 
 		} catch (RestException e) {
 			String message = String.format("Error while updating product pricing info [%s]",

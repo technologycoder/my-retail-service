@@ -405,6 +405,9 @@ public class MyRetailServiceIntegrationTests {
 		assertEquals("Price info for product with id [123] not found.", JsonPath.read(response.getBody(), "$.error"));
 
 	}
+	
+	
+	
 
 	private void indexProductDetails(Product product) throws Exception {
 

@@ -83,15 +83,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product updateProduct(Product product)
 			throws ResourceNotFoundException, ProductValidationException, Exception {
-
+		
+		//perform validation
 		List<String> messages = this.productValidationService.validate(product);
 		if (messages != null && !messages.isEmpty()) {
 			throw new ProductValidationException(this.objectMapper.writeValueAsString(messages));
-		}
+		}		
 
-		// making sure product/price with ID exists
-		this.getProduct(product.getId());
-
+		//update product prices
 		this.productPriceRepository.updateProductPrice(product.getProductPrice(), product.getId());
 
 		return this.getProduct(product.getId());
